@@ -250,6 +250,25 @@ begin
   --dir_red
   --dir_green
   --dir_blue
+  
+	dir_red<=x"FF" when dir_pixel_row>= 0  and dir_pixel_row<150 else
+				x"00" when dir_pixel_row>= 150  and dir_pixel_row<330 else
+				
+				x"FF";
+	dir_green<=x"00" when dir_pixel_row>= 0  and dir_pixel_row<150 else
+				x"FF" when dir_pixel_row>= 150  and dir_pixel_row<330 else
+			
+				x"00";
+				
+	dir_blue<=x"00" when dir_pixel_row>= 0  and dir_pixel_row<150 else
+				x"00" when dir_pixel_row>= 150  and dir_pixel_row<330 else
+			
+				x"00";	
+	
+	
+	
+	
+  
  
   -- koristeci signale realizovati logiku koja pise po TXT_MEM
   --char_address
