@@ -168,11 +168,11 @@ begin
   graphics_lenght <= conv_std_logic_vector(MEM_SIZE*8*8, GRAPH_MEM_ADDR_WIDTH);
   
   -- removed to inputs pin
-  direct_mode <= '1';
-  display_mode     <= "10";  -- 01 - text mode, 10 - graphics mode, 11 - text & graphics
+  direct_mode <= '0';
+  display_mode <= "01";  -- 01 - text mode, 10 - graphics mode, 11 - text & graphics
   
   font_size        <= x"1";
-  show_frame       <= '1';
+  show_frame       <= '0';
   foreground_color <= x"FFFFFF";
   background_color <= x"000000";
   frame_color      <= x"FF0000";
@@ -251,19 +251,19 @@ begin
   --dir_green
   --dir_blue
   
-	dir_red<=x"FF" when dir_pixel_row>= 0  and dir_pixel_row<150 else
-				x"00" when dir_pixel_row>= 150  and dir_pixel_row<330 else
-				
-				x"FF";
-	dir_green<=x"00" when dir_pixel_row>= 0  and dir_pixel_row<150 else
-				x"FF" when dir_pixel_row>= 150  and dir_pixel_row<330 else
-			
-				x"00";
-				
-	dir_blue<=x"00" when dir_pixel_row>= 0  and dir_pixel_row<150 else
-				x"00" when dir_pixel_row>= 150  and dir_pixel_row<330 else
-			
-				x"00";	
+----	dir_red<=x"FF" when dir_pixel_row>= 0  and dir_pixel_row<150 else
+--				x"00" when dir_pixel_row>= 150  and dir_pixel_row<330 else
+--				
+--				x"FF";
+--	dir_green<=x"00" when dir_pixel_row>= 0  and dir_pixel_row<150 else
+--				x"FF" when dir_pixel_row>= 150  and dir_pixel_row<330 else
+--			
+--				x"00";
+--				
+--	dir_blue<=x"00" when dir_pixel_row>= 0  and dir_pixel_row<150 else
+--				x"00" when dir_pixel_row>= 150  and dir_pixel_row<330 else
+--			
+--				x"00";	
 	
 	
 	
@@ -274,6 +274,26 @@ begin
   --char_address
   --char_value
   --char_we
+  
+	char_we<= '1';
+	
+		process(pix_clock_s,reset_n_i)begin
+			if(reset_n_i='0')then
+				char_address<=(others=>'0');
+			elsif(pix_clock_s = '1')then
+				if(char_we='1')then
+					char_address<=char_address+1;
+				elsif(char_address<="0001001011000000")then
+						char_address<=(others=>'0');
+				else char_address<=char_address;
+			end if;
+			end if;
+		end process;
+	
+	char_value<="000011" when (char_address="000000"&x"02")else
+				 "100000";
+	
+  
   
   -- koristeci signale realizovati logiku koja pise po GRAPH_MEM
   --pixel_address
